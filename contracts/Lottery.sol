@@ -46,7 +46,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     event LotteryRequestedWinner(uint256 indexed requestId);
 
     constructor(
-        address vrfCoordinatorV2,
+        address vrfCoordinatorV2, //external contract: deploying mock
         uint256 entranceFee,
         bytes32 gasLane,
         uint64 subscriptionId,
@@ -136,5 +136,29 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function getRecentWinner() public view returns (address) {
         return s_winner;
+    }
+
+    function getNumWords() public pure returns (uint256) {
+        return NUM_WORDS;
+    }
+
+    function getLatestTimestamp() public view returns (uint256) {
+        return s_lastBlockTimestamp;
+    }
+
+    function getRequestConfirmations() public pure returns (uint256) {
+        return REQUEST_CONFIRMATION;
+    }
+
+    function getLotteryState() public view returns (LotteryState) {
+        return s_lotteryState;
+    }
+
+    function getNumberOfPlayers() public view returns (uint256) {
+        return s_players.length;
+    }
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
     }
 }
