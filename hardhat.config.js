@@ -44,4 +44,5 @@ module.exports = {
     outputFile: "gasReport.txt",
     noColors: true,
   },
+  mocha: { timeout: 200000 },
 };

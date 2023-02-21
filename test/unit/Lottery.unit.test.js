@@ -13,7 +13,6 @@ const { devChains, networkConfig } = require("../../helper.hardhat.config");
         await deployments.fixture("all");
         lottery = await ethers.getContract("Lottery", deployer);
         vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer);
-        //vrfCoordinatorV2Mock.addConsumer(subscriptionId, lottery.address);
         entranceFee = await lottery.getEntranceFee();
         interval = await lottery.getInterval();
         state = await lottery.getLotteryState();
@@ -114,6 +113,42 @@ const { devChains, networkConfig } = require("../../helper.hardhat.config");
           await expect(
             vrfCoordinatorV2Mock.fulfillRandomWords(1, lottery.address)
           ).to.be.revertedWith("nonexistent request");
+        });
+        it("picks a winner, resets the lottery, send money", async function () {
+          const additionalPlayers = 3;
+          const startIndex = 1;
+          const accounts = await ethers.getSigners();
+          for (let i = startIndex; i < startIndex + additionalPlayers; i++) {
+            accountConnectedLottery = lottery.connect(accounts[i]);
+            await accountConnectedLottery.enterLottery({ value: entranceFee });
+          }
+          const startTimestamp = await lottery.getLatestTimestamp();
+
+          await new Promise(async (resolve, reject) => {
+            lottery.once("LotteryRequestedWinner", async () => {
+              console.log("Event found");
+              try {
+                const winner = lottery.getRecentWinner();
+                const state = lottery.getLotteryState();
+                const endingTimestamp = lottery.getLatestTimestamp();
+                const numPlayers = lottery.getNumberOfPlayers();
+                assert(numPlayers.toString(), 0);
+                assert(state.toString(), 0);
+                assert(endingTimestamp > startTimestamp);
+              } catch (e) {
+                reject(e);
+              }
+              resolve();
+            });
+            //Mocking Chainlink keepers
+            const txRes = lottery.performUpkeep([]);
+            const txRec = txRes.wait(1);
+            //Mocking Chainlink VRF
+            await vrfCoordinatorV2Mock.fulfillRandomWords(
+              txRec.events[1].args.requestId,
+              lottery.address
+            );
+          });
         });
       });
     });
