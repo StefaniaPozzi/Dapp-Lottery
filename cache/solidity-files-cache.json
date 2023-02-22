@@ -44,8 +44,8 @@
       "artifacts": []
     },
     "/Users/stefaniapozzi/Personal/blockchain/lottery/contracts/Lottery.sol": {
-      "lastModificationDate": 1677074497378,
-      "contentHash": "b3476f36c6c0f9b61af9676cd5111eac",
+      "lastModificationDate": 1677078529853,
+      "contentHash": "2224e435b37ca2a04e1e9a3b7e869089",
       "sourceName": "contracts/Lottery.sol",
       "solcConfig": {
         "version": "0.8.7",

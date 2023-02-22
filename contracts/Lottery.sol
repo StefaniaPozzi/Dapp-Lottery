@@ -44,6 +44,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     event LotteryEnter(address indexed player);
     event LotteryRequestedWinner(uint256 indexed requestId);
+    event LotteryWinnerPicked(address indexed winner);
 
     constructor(
         address vrfCoordinatorV2, //external contract: deploying mock
@@ -85,7 +86,8 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         }
         s_players = new address payable[](0);
         s_lastBlockTimestamp = block.timestamp;
-        //status OPEN AGAIN?
+
+        emit LotteryWinnerPicked(winner);
     }
 
     /**
