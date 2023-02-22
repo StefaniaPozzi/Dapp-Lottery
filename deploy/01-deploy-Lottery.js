@@ -46,7 +46,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
   if (chainId != 31337 && process.env.ETHSCAN_API_KEY) {
     log("Verifying..");
-    await verify(lottery.address, args);
+    await verify(lottery.address, arguments);
   }
 };
 

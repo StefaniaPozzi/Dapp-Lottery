@@ -50,7 +50,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         uint256 entranceFee,
         bytes32 gasLane,
         uint64 subscriptionId,
-        uint16 callbackGasLimit,
+        uint32 callbackGasLimit,
         uint256 interval
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
         i_entranceFee = entranceFee;
@@ -120,7 +120,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
             i_gasLane,
             i_subscriptionId,
             REQUEST_CONFIRMATION,
-            i_callbackGasLimit,
+            uint32(i_callbackGasLimit),
             NUM_WORDS
         );
         emit LotteryRequestedWinner(requestId);
