@@ -19,6 +19,9 @@ const { devChains, networkConfig } = require("../../helper.hardhat.config");
       });
 
       describe("constructor", async function () {
+        it("Gas reporter", async function () {
+          assert(1, 1);
+        });
         it("Initialising the lottery with all the params", async function () {
           assert(state.toString(), 0);
           assert(interval.toString(), networkConfig[chainId]["interval"]);

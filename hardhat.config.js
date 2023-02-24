@@ -26,7 +26,15 @@ module.exports = {
       accounts: [PRIVATE_KEY],
     },
   },
-  solidity: "0.8.7",
+  solidity: {
+    version: "0.8.7",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   namedAccounts: {
     deployer: {
       default: 0,
@@ -39,10 +47,12 @@ module.exports = {
     apiKey: ETHSCAN_API_KEY,
   },
   gasReporter: {
-    enabled: false,
+    enabled: true,
     currency: "USD",
-    outputFile: "gasReport.txt",
+    outputFile: "gasReport-200runs.txt",
     noColors: true,
+    coinmarketcap: process.env.COINMARKETCAP_API_KEY || "",
+    token: "ETH",
   },
   mocha: { timeout: 200000 },
 };
